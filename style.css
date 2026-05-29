@@ -1,0 +1,323 @@
+/* ────────────────────────────────────────────
+   D·Sc · Layered Parallax — Apple/B&O 系 product page
+   黒ステージ・抑制された色・透明ヘアラインの注釈・
+   生成りの intro/after でコントラスト
+   ──────────────────────────────────────────── */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:where(html,body){line-break:strict;word-break:normal;overflow-wrap:break-word}
+:where(h1,h2,h3,h4){text-wrap:balance}
+:where(p,li){text-wrap:pretty}
+
+:root{
+  --bg:#f4f3ee;
+  --ink:#0a0a0a;
+  --muted:#6a6a6a;
+  --line:#d8d6cc;
+  --paper:#fff;
+  --hi:#ff2d55;
+  --alt:#0066ff;
+  --font:'DM Sans','Noto Sans JP',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+
+  --pa-section:420vh;
+  --pa-range:48vh;
+  --hairline:rgba(255,255,255,.35);
+  --site-header-h:56px;        /* サイトヘッダー高（sticky）。ステージはこれを避ける */
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;line-height:1.65}
+a{color:inherit;text-decoration:none}
+
+/* ─── HEADER ─── */
+header.site{
+  position:sticky;top:0;z-index:50;background:var(--bg);
+  padding:1rem clamp(1.2rem,4vw,3rem);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  border-bottom:1px solid var(--ink);
+}
+.back{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;display:inline-flex;align-items:center;gap:.6em}
+.back .arrow{transition:transform .25s}
+.back:hover .arrow{transform:translateX(-.3em)}
+.cell-marker{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;color:var(--hi)}
+
+/* ─── intro / after（生成りで「外」と「中（黒）」を切り替え） ─── */
+.intro,.after{
+  max-width:1200px;margin:0 auto;
+  padding:clamp(6rem,14vw,11rem) clamp(1.5rem,4vw,3rem);
+  min-height:78vh;display:flex;flex-direction:column;justify-content:center;
+}
+.kicker{
+  display:inline-block;align-self:flex-start;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.32em;color:var(--muted);
+  margin-bottom:1.8rem;
+}
+.intro h1{
+  font-weight:700;font-size:clamp(4rem,16vw,10.5rem);
+  line-height:.95;letter-spacing:-.04em;
+}
+.intro .lead{font-size:clamp(1rem,1.25vw,1.15rem);color:var(--muted);max-width:34em;margin-top:2rem;line-height:1.95}
+.scroll-cue{margin-top:2.4rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.28em;color:var(--muted);animation:cue 1.8s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes cue{0%,100%{opacity:1;transform:translateY(0)}50%{opacity:.4;transform:translateY(.3em)}}
+.after h2{font-weight:700;font-size:clamp(2.4rem,8vw,5.2rem);line-height:1.02;letter-spacing:-.03em}
+.after p{font-size:clamp(.95rem,1.2vw,1.1rem);color:var(--muted);max-width:38em;margin-top:1.4rem;line-height:1.95}
+.after code{font-family:var(--mono);font-size:.86em;background:var(--paper);padding:.1em .35em;border:1px solid var(--line)}
+.after-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2.4rem}
+.cta{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;
+  padding:1em 1.5em;background:transparent;border:1px solid var(--ink);color:var(--ink);cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.cta--solid{background:var(--ink);color:#fff}
+.cta:hover{background:var(--ink);color:#fff}
+
+/* ────────────────────────────────────────────
+   COMPONENT: .parallax — 真っ黒ステージ
+   ──────────────────────────────────────────── */
+.parallax{position:relative;height:var(--pa-section);background:#0a0a0a}
+.pa-stage{
+  position:sticky;
+  top:var(--site-header-h);                              /* サイトヘッダー直下に貼り付く */
+  height:calc(100vh - var(--site-header-h));             /* ヘッダー分を引いた高さ */
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(255,255,255,.05),transparent 55%),
+    linear-gradient(180deg,#0c0c0e 0%,#060608 100%);
+  color:#fff;
+}
+
+/* ステージ上下のブランド/メタ枠（ヘアライン区切り） */
+.pa-topbar,.pa-bottombar{
+  position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem clamp(1.4rem,4vw,3rem);
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.28em;color:rgba(255,255,255,.55);
+  z-index:5;pointer-events:none;
+}
+.pa-topbar{top:0;border-bottom:1px solid rgba(255,255,255,.08)}
+.pa-bottombar{bottom:0;border-top:1px solid rgba(255,255,255,.08)}
+.pa-brand{color:rgba(255,255,255,.9);font-weight:700}
+.pa-model{color:rgba(255,255,255,.55)}
+.pa-tagline{color:rgba(255,255,255,.5)}
+.pa-counter{color:#fff;font-variant-numeric:tabular-nums}
+
+/* depth：単一の柔らかい上方スポット（カラフルは排除） */
+.pa-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.04),transparent 60%);
+}
+.pa-spot{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 56%,rgba(230,236,255,.10),transparent 38%);
+  will-change:transform;
+}
+
+/* 製品（refined 3D：preserve-3d + 各層 translateZ で本物の奥行き） */
+.pa-product-wrap{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:64px clamp(1rem,4vw,3rem);    /* topbar/bottombar の高さぶん常に余白を確保 */
+  perspective:1600px;perspective-origin:50% 54%;
+  will-change:transform;
+}
+.pa-product{
+  position:relative;
+  width:clamp(180px,24vw,270px);
+  aspect-ratio:.58;
+  transform-style:preserve-3d;
+  filter:drop-shadow(0 60px 50px rgba(0,0,0,.55));
+}
+
+/* 床のアンビエント光（製品の周囲に淡い反射） */
+.prod-floor{
+  position:absolute;left:-35%;right:-35%;bottom:-30%;height:36%;
+  background:radial-gradient(ellipse at center,rgba(200,210,255,.10),transparent 60%);
+  filter:blur(22px);transform:translateZ(-12px);
+}
+
+/* 地面に落ちる硬めの影 */
+.prod-shadow{
+  position:absolute;left:50%;bottom:-8%;width:85%;height:5%;transform:translateX(-50%) translateZ(-6px);
+  background:radial-gradient(ellipse,rgba(0,0,0,.78),transparent 70%);filter:blur(13px);
+}
+
+/* 本体：円柱の核＝「横方向の陰影」（端暗・中央明）を base に、
+   その上に縦の天光・地暗を重ねて円柱面に光が当たっている表現 */
+.prod-body{
+  position:absolute;inset:0;
+  border-radius:50% 50% 46% 46%/14% 14% 8% 8%;
+  background:
+    /* 天光（上が明るい） */
+    linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,0) 22%),
+    /* 地暗（下に深い影） */
+    linear-gradient(180deg,transparent 60%,rgba(0,0,0,.55) 100%),
+    /* 横方向の円柱シェード（端→中央→端） */
+    linear-gradient(90deg,
+      #050507 0%,
+      #16161a 12%,
+      #2a2a30 30%,
+      #3c3c44 50%,
+      #2a2a30 70%,
+      #16161a 88%,
+      #050507 100%);
+  box-shadow:
+    inset 0 -16px 26px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.prod-body::before{
+  content:"";position:absolute;left:7%;right:7%;top:16%;height:1px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.20),transparent);
+}
+.prod-body::after{
+  content:"";position:absolute;left:7%;right:7%;bottom:13%;height:1px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.10),transparent);
+}
+
+/* 右側のリムライト（背面光が縁に乗る、控えめに） */
+.prod-rim{
+  position:absolute;top:11%;bottom:16%;right:0;width:7%;
+  border-radius:0 46% 46% 0/0 50% 50% 0;
+  background:linear-gradient(to left,rgba(220,230,255,.22),rgba(255,255,255,0) 65%);
+  mix-blend-mode:screen;pointer-events:none;
+  transform:translateZ(2px);
+}
+
+/* メッシュ（dots）：上下＋左右のマスクで「筒に巻いている」表現 */
+.prod-mesh{
+  position:absolute;left:10%;right:10%;top:22%;bottom:22%;
+  border-radius:30% 30% 26% 26%/12%;
+  background:radial-gradient(circle,rgba(255,255,255,.12) .9px,transparent 1.1px) 0 0/6px 6px;
+  opacity:1;
+  -webkit-mask:radial-gradient(ellipse at center,#000 38%,rgba(0,0,0,.7) 60%,transparent 92%);
+          mask:radial-gradient(ellipse at center,#000 38%,rgba(0,0,0,.7) 60%,transparent 92%);
+  transform:translateZ(.5px);
+}
+
+/* 円柱曲面に乗る specular（左寄り、縦長のソフトな筋） */
+.prod-shine{
+  position:absolute;left:30%;width:12%;top:14%;bottom:24%;
+  border-radius:50%/50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.08) 55%,transparent 100%);
+  mix-blend-mode:screen;filter:blur(7px);
+  transform:translateZ(5px);
+}
+
+/* キャップ下の接合シャドウ（キャップが本体に乗っている陰） */
+.prod-cap-shadow{
+  position:absolute;left:7%;right:7%;top:10.2%;height:2%;
+  background:linear-gradient(to bottom,rgba(0,0,0,.7),transparent);
+  border-radius:50% 50% 30% 30%/100% 100% 0 0;
+  filter:blur(.6px);transform:translateZ(4px);
+}
+
+/* キャップ：緩いドーム状のフタ（お椀化を防ぐため下の内側シャドウは削除） */
+.prod-cap{
+  position:absolute;left:7%;right:7%;top:-3%;height:14%;
+  border-radius:50%;
+  background:
+    /* トップに当たる強い highlight */
+    radial-gradient(ellipse at 50% 30%,rgba(255,255,255,.45) 0%,rgba(255,255,255,.08) 32%,transparent 60%),
+    /* 緩い球面シェード：中央寄りが明、外周がやや暗 */
+    radial-gradient(ellipse at 50% 45%,#7a7a7e 0%,#4a4a4e 55%,#22222a 95%,#0c0c10 100%);
+  box-shadow:
+    /* 本体に落ちる影 */
+    0 10px 18px rgba(0,0,0,.55),
+    /* 上端のメタリックなふち */
+    inset 0 2px 0 rgba(255,255,255,.55),
+    /* 全周のごく薄い暗い縁取り */
+    inset 0 0 0 1px rgba(0,0,0,.35);
+  transform:translateZ(8px);
+}
+
+/* 下端の LED（前面に浮かぶ） */
+.prod-led{
+  position:absolute;left:50%;top:91%;width:5px;height:5px;border-radius:50%;
+  background:#fff;transform:translate(-50%,-50%) translateZ(7px);
+  box-shadow:0 0 6px rgba(255,255,255,.7);opacity:.85;
+}
+
+/* スペック注釈（透明、ヘアライン、リファインされた typography） */
+.pa-annots{position:absolute;inset:0;pointer-events:none}
+.pa-annot{
+  position:absolute;
+  max-width:14em;
+  opacity:0;transform:translateX(8px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);
+}
+.pa-annot.is-on{opacity:1;transform:none}
+.ann-tag{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.32em;color:rgba(255,255,255,.55);margin-bottom:.5rem}
+.ann-val{
+  display:block;font-weight:600;font-size:clamp(2rem,4vw,3.2rem);
+  line-height:1;letter-spacing:-.025em;color:#fff;
+}
+.ann-val small{font-family:var(--font);font-weight:500;font-size:.42em;letter-spacing:0;color:rgba(255,255,255,.6);margin-left:.18em}
+.ann-note{font-size:.82rem;line-height:1.75;color:rgba(255,255,255,.7);margin-top:.65rem;font-weight:400}
+
+/* 注釈と製品を結ぶヘアライン + ピンドット（PC のみ） */
+@media(min-width:880px){
+  .pa-annot{right:9%;left:auto;text-align:right}
+  .annot--top   {top:18%}
+  .annot--upper {top:36%}
+  .annot--lower {top:54%}
+  .annot--bottom{top:72%}
+  .pa-annot::before{
+    content:"";position:absolute;left:-15vw;top:1.4em;width:15vw;height:1px;
+    background:linear-gradient(to right,transparent,var(--hairline) 30%,var(--hairline));
+  }
+  .pa-annot::after{
+    content:"";position:absolute;left:calc(-15vw - 5px);top:calc(1.4em - 3px);width:7px;height:7px;border-radius:50%;
+    background:var(--hi);box-shadow:0 0 8px var(--hi);
+  }
+  /* 出現時にラインも伸びるよう transition */
+  .pa-annot::before{transform-origin:right center;transform:scaleX(0);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .pa-annot.is-on::before{transform:scaleX(1)}
+  .pa-annot::after{opacity:0;transition:opacity .35s ease .35s}
+  .pa-annot.is-on::after{opacity:1}
+}
+@media(max-width:879px){
+  .pa-annot{left:5%;right:5%;max-width:none;text-align:left}
+  .annot--top   {top:11%}
+  .annot--upper {top:28%}
+  .annot--lower {top:48%}
+  .annot--bottom{top:68%}
+}
+
+/* progress：細いヘアライン */
+.pa-progress{position:absolute;left:0;right:0;top:0;height:1px;background:transparent;z-index:6}
+.pa-progress span{display:block;height:100%;width:var(--p,0%);background:#fff;transition:width .1s linear}
+/* END COMPONENT */
+
+
+/* ─── NOTES（明背景に戻る） ─── */
+.notes{max-width:1100px;margin:0 auto;padding:clamp(3rem,6vw,5rem) clamp(1.5rem,4vw,3rem)}
+.shou{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid var(--ink);margin-bottom:2.5rem}
+.shou h2{font-size:clamp(1.3rem,2vw,1.7rem);font-weight:700;letter-spacing:.04em}
+.shou .no{font-family:var(--mono);font-size:.78rem;letter-spacing:.25em;color:var(--muted)}
+.frame{font-size:.92rem;line-height:1.9;color:var(--muted);max-width:46em;margin:-1rem 0 2rem;padding:1rem 1.2rem;border-left:3px solid var(--hi);background:var(--paper)}
+.frame code{font-family:var(--mono);font-size:.88em;background:var(--bg);padding:.1em .35em;border:1px solid var(--line)}
+.notes-grid{display:grid;grid-template-columns:1fr;gap:1.2rem;margin-bottom:3rem}
+@media(min-width:780px){.notes-grid{grid-template-columns:repeat(3,1fr)}}
+.note{position:relative;background:var(--paper);border:1px solid var(--ink);padding:1.5rem 1.4rem 1.4rem}
+.note-no{position:absolute;top:1rem;right:1rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--muted)}
+.note h3{font-size:1.02rem;font-weight:700;margin-bottom:.7rem;letter-spacing:.02em}
+.note p{font-size:.86rem;color:var(--muted);line-height:1.8}
+.note code,.var span code{font-family:var(--mono);font-size:.85em;background:var(--bg);padding:.1em .35em;border:1px solid var(--line)}
+.sub-h{font-size:1rem;font-weight:700;letter-spacing:.04em;margin:2rem 0 1rem;padding-bottom:.7rem;border-bottom:1px dashed var(--ink)}
+.vars{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--ink);background:var(--paper)}
+.var{display:grid;grid-template-columns:minmax(8rem,auto) 1fr auto;gap:1rem;padding:.8rem 1rem;border-bottom:1px solid var(--line);align-items:center}
+.var:last-child{border-bottom:none}
+.var code{font-family:var(--mono);font-size:.82rem;color:var(--hi);font-weight:500}
+.var span{font-size:.85rem;color:var(--muted);line-height:1.5}
+.var em{font-family:var(--mono);font-size:.78rem;font-style:normal;color:var(--ink);background:var(--bg);padding:.15em .55em;border:1px solid var(--line);white-space:nowrap}
+@media(max-width:680px){.var{grid-template-columns:1fr;gap:.3rem;padding:.9rem 1rem}.var em{justify-self:start}}
+
+/* ─── FOOTER ─── */
+footer{
+  padding:2rem clamp(1.2rem,4vw,3rem) 1.5rem;
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--muted);
+  border-top:1px solid var(--ink);
+}
+footer a{color:var(--ink)}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .pa-spot,.pa-product-wrap,.pa-product{transform:none !important}
+  .scroll-cue{animation:none}
+}

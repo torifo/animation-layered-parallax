@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>パララックス層スクロール — Animation Studies</title>
+  <meta name="description" content="スクロール位置に同期した多層パララックス + 製品の 3D 微回転 + スクロールで指し示すスペック注釈。Apple AirPods Max / B&O 系の product page UX を再現。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header class="site">
+  <a class="back" href="../">
+    <span class="arrow">←</span>
+    <span>ANIMATION · INDEX</span>
+  </a>
+  <span class="cell-marker">LAYERED PARALLAX</span>
+</header>
+
+<main>
+
+  <!-- ─── intro ─── -->
+  <section class="intro">
+    <span class="kicker">HARMONIC LAB · 2026</span>
+    <h1>MARK I</h1>
+    <p class="lead">wireless speaker, designed to disappear. 下にスクロールすると、深度レイヤーが異速度で動き、製品が微回転しながらスペックが指し示される。長尺の product page で使う scrollytelling の実用例。</p>
+    <span class="scroll-cue">SCROLL ↓</span>
+  </section>
+
+  <!-- ─── The Reusable Component（多層パララックス + 3D 製品 + 注釈） ─── -->
+  <section class="parallax" data-parallax>
+
+    <div class="pa-stage">
+
+      <!-- Apple/B&O 風：黒ステージ + 単一のスポット光だけ -->
+      <div class="pa-bg"></div>
+      <div class="pa-spot" data-speed="0.10"></div>
+
+      <div class="pa-topbar">
+        <span class="pa-brand">HARMONIC LAB</span>
+        <span class="pa-model">MARK I</span>
+      </div>
+
+      <!-- 製品（スクロールで微回転＋わずかに上昇） -->
+      <div class="pa-product-wrap" data-speed="0.12">
+        <div class="pa-product" data-rotate-y="22" data-rotate-x="-6" data-scale=".06">
+          <div class="prod-floor"></div>
+          <div class="prod-shadow"></div>
+          <div class="prod-body"></div>
+          <div class="prod-rim"></div>
+          <div class="prod-mesh"></div>
+          <div class="prod-shine"></div>
+          <div class="prod-cap-shadow"></div>
+          <div class="prod-cap"></div>
+          <div class="prod-led"></div>
+        </div>
+      </div>
+
+      <!-- スペック注釈（章ごとに線を引いて製品を指す） -->
+      <div class="pa-annots">
+        <aside class="pa-annot annot--top"    data-from=".06" data-to=".34">
+          <span class="ann-tag">01 — DRIVER</span>
+          <strong class="ann-val">50<small>mm</small></strong>
+          <p class="ann-note">フルレンジ・軽量振動板。声が立つ。</p>
+        </aside>
+        <aside class="pa-annot annot--upper"  data-from=".26" data-to=".55">
+          <span class="ann-tag">02 — WEIGHT</span>
+          <strong class="ann-val">320<small>g</small></strong>
+          <p class="ann-note">片手で持って机に置ける重さ。</p>
+        </aside>
+        <aside class="pa-annot annot--lower"  data-from=".48" data-to=".77">
+          <span class="ann-tag">03 — BATTERY</span>
+          <strong class="ann-val">18<small>h</small></strong>
+          <p class="ann-note">USB-C で 2 時間で満充電。</p>
+        </aside>
+        <aside class="pa-annot annot--bottom" data-from=".68" data-to=".96">
+          <span class="ann-tag">04 — MATERIAL</span>
+          <strong class="ann-val">Recycled Al</strong>
+          <p class="ann-note">アルマイト処理。指紋が目立たない。</p>
+        </aside>
+      </div>
+
+      <div class="pa-bottombar">
+        <span class="pa-tagline">Designed in Tokyo. Acoustic at home.</span>
+        <span class="pa-counter" data-pct>0%</span>
+      </div>
+      <div class="pa-progress" data-progress aria-hidden="true"><span></span></div>
+    </div>
+
+  </section>
+
+  <!-- ─── after（コンバージョン的セクション） ─── -->
+  <section class="after">
+    <h2>Listen everywhere.</h2>
+    <p>ロングスクロールで「製品の存在」と「スペック」「素材」を物語として積み上げる。実装は <code>data-speed</code>（多層パララックス）と <code>data-rotate-y/x</code>・<code>data-scale</code>（要素の進捗追従）、<code>data-from/to</code>（注釈の出現範囲）だけ。</p>
+    <div class="after-cta">
+      <a class="cta cta--solid">PRE-ORDER · ¥38,000</a>
+      <a class="cta">SPEC SHEET (PDF)</a>
+    </div>
+  </section>
+
+  <!-- ─── Usage notes ─── -->
+  <section class="notes">
+    <div class="shou"><h2>使い方</h2><span class="no">— USAGE</span></div>
+    <p class="frame">↑ 想定：プロダクトの紹介・スペックページ／長尺ジャーナル／ブランドのオリジンストーリー。物理イラストではなく <strong>UI 要素（製品・スペック注釈・CTA）</strong> を多層パララックスに乗せるのが実用形。</p>
+
+    <div class="notes-grid">
+      <div class="note">
+        <span class="note-no">01</span>
+        <h3>2 ファイルをコピー</h3>
+        <p><code>style.css</code> / <code>script.js</code> を移植先へ。外部依存ゼロ。</p>
+      </div>
+      <div class="note">
+        <span class="note-no">02</span>
+        <h3>data-speed / rotate / scale</h3>
+        <p>任意の要素に <code>data-speed</code>（縦移動）、<code>data-rotate-y</code>・<code>data-rotate-x</code>（進捗で 0→指定度）、<code>data-scale</code>（進捗で +指定）を付ければ、JS が transform を 1 本にまとめて毎フレーム反映する。</p>
+      </div>
+      <div class="note">
+        <span class="note-no">03</span>
+        <h3>注釈の出現範囲</h3>
+        <p><code>.pa-annot[data-from][data-to]</code> で進捗範囲を指定。製品の各部位を指すラインは CSS の <code>::before/::after</code> で。</p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">CSS 変数</h3>
+    <div class="vars">
+      <div class="var"><code>--pa-section</code><span>セクション全体の高さ（=スクロール量）</span><em>400vh</em></div>
+      <div class="var"><code>--pa-range</code><span>レイヤー最大移動量の基準</span><em>50vh</em></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 ANIMATION DESIGN STUDY</span>
+  <a href="../">← INDEX</a>
+</footer>
+
+<script src="./script.js"></script>
+</body>
+</html>
