@@ -14,6 +14,23 @@
 | 依存 | なし（Pure HTML + CSS + Vanilla JS） |
 | 推奨配置 | プロダクト紹介ページ、ブランドのオリジンストーリー、長尺記事 |
 
+
+## スキルとして導入 / Install as a skill
+
+このリポジトリは Claude Code / Codex CLI 共通の **`SKILL.md`**（オープン標準）を同梱しており、AI エージェントのスキルとして使えます。リポジトリ自体をスキルディレクトリへリンクするだけです。
+
+This repo ships a cross-agent **`SKILL.md`** (open standard) usable by both Claude Code and Codex CLI. Just link the repo into the agent's skills directory.
+
+```bash
+# Claude Code
+ln -s "$(pwd)" ~/.claude/skills/anim-layered-parallax
+# Codex CLI
+ln -s "$(pwd)" ~/.codex/skills/anim-layered-parallax
+```
+
+エージェントを再起動すると `description` に基づき自動でマッチします（スキル名: `anim-layered-parallax`）。
+Restart the agent; it is matched automatically by the skill's `description` (skill name: `anim-layered-parallax`).
+
 ## 仕組み（位置ベース・汎用 transform）
 
 1. 背の高い `.parallax[data-parallax]`（既定 `--pa-section: 400vh`）の中で `.pa-stage` が `position:sticky`
@@ -154,4 +171,3 @@ ANIMATION DESIGN STUDY の一部として公開（コピペ自由）。
 - 空 / 遠山 / 中景 / 霧 / 近景 / 草の 6 層を異速度で動かす scrollytelling
 - 3 章のキャプション（`data-from / data-to`）と進捗バー
 - 架空フィールドノート『北アルプス、霧の朝』として実装（後に v0.2 で製品ページに差し替え）
-
